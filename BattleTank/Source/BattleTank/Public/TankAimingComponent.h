@@ -17,7 +17,7 @@ public:
     UTankAimingComponent();
 
 public:
-    void AimAt(FVector TargetLocation) const;
+    void AimAt(FVector TargetLocation, float LaunchSpeed) const;
 
     void SetBarrelReference(UStaticMeshComponent* BarrelToSet);
 
