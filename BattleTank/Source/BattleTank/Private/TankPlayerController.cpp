@@ -1,6 +1,28 @@
 #include "TankPlayerController.h"
 #include "Engine/World.h"
 
+void ATankPlayerController::BeginPlay()
+{
+    Super::BeginPlay();
+
+    auto ControlledTank = GetControlledTank();
+    if (!ControlledTank)
+    {
+        UE_LOG(LogTemp, Warning, TEXT("PlayerController not possesing a tank"));
+    }
+    else
+    {
+        UE_LOG(LogTemp, Warning, TEXT("PlayerController possessing: %s"), *(ControlledTank->GetName()));
+    }
+}
+
+void ATankPlayerController::Tick(float DeltaTime)
+{
+    Super::Tick(DeltaTime);
+    AimTowardsCrosshair();
+    //UE_LOG(LogTemp, Warning, TEXT("TankPlayerController: Tick - %f"), DeltaTime);
+}
+
 ATank* ATankPlayerController::GetControlledTank() const
 {
 	return Cast<ATank>(GetPawn());
@@ -55,26 +77,4 @@ bool ATankPlayerController::GetLookDirection(FVector2D ScreenLocation, FVector& 
 {
     FVector CameraWorldLocation;
     return DeprojectScreenPositionToWorld(ScreenLocation.X, ScreenLocation.Y, CameraWorldLocation, LookDirection);
-}
-
-void ATankPlayerController::BeginPlay()
-{
-	Super::BeginPlay();
-
-	auto ControlledTank = GetControlledTank();
-	if (!ControlledTank)
-	{
-		UE_LOG(LogTemp, Warning, TEXT("PlayerController not possesing a tank"));
-	}
-	else
-	{
-		UE_LOG(LogTemp, Warning, TEXT("PlayerController possessing: %s"), *(ControlledTank->GetName()));
-	}
-}
-
-void ATankPlayerController::Tick(float DeltaTime)
-{
-	Super::Tick(DeltaTime);
-	AimTowardsCrosshair();
-	//UE_LOG(LogTemp, Warning, TEXT("TankPlayerController: Tick - %f"), DeltaTime);
 }
